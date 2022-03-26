@@ -3,6 +3,8 @@ import "./App.css";
 import styled from "styled-components";
 import Header from "./Components/Header";
 import firebase from "./firebase/firebase";
+import Game from "./Components/Game";
+import Navigation from "./Navigation";
 
 function App() {
   const [test,setTest]=useState("")
@@ -16,13 +18,13 @@ function App() {
   return (
     <SCContainer>
       <Header />
-      Hello
+      <Navigation />
     </SCContainer>
   );
 }
 
 const SCContainer = styled.div`
-  width: 900px;
+  width: 1200px;
   margin: 0px auto;
 `;
 
