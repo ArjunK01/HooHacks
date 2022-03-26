@@ -1,9 +1,29 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
+import { Routes, Route, useParams } from "react-router-dom";
 import Player from "./Player";
 import styled from "styled-components";
 import HeaderText from "./HeaderText";
 import Card from "./Card";
+import firebase from "../firebase/firebase";
 const Game = () => {
+  let {gameID}=useParams()
+  const [game,setGame]=useState()
+  useEffect(()=>{
+   firebase.firestore().collection('Games').doc(gameID).get().then((doc)=>{
+     setGame(doc)
+   })
+  },[])
+
+  
+
+
+
+
+
+
+
+
+
   return (
     <div>
       <HeaderText>Game 1</HeaderText>
@@ -26,6 +46,17 @@ const Game = () => {
     </div>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
 
 const Container = styled.div`
   display: flex;
