@@ -1,6 +1,6 @@
 
 
-function createGame(name, players,range, transactions,currentMarket){
+export function createGame(name, players,range, transactions,currentMarket){
     let game={
         name:name,
         players:players,
@@ -16,7 +16,7 @@ function createGame(name, players,range, transactions,currentMarket){
     
 }
 
-function createPendingGame(name, players){
+export function createPendingGame(name, players){
     let pendingGame={
         name:name,
         players:players
@@ -27,7 +27,7 @@ function createPendingGame(name, players){
 
 
 
-function createTransaction(playerName,makeMarket,sell,ask,askSize,bid,bidSize,quantity,f){
+export function createTransaction(playerName,makeMarket,sell,ask,askSize,bid,bidSize,quantity,f){
     let thing={}
     if(makeMarket==true){
         const trans={
@@ -62,7 +62,7 @@ function createTransaction(playerName,makeMarket,sell,ask,askSize,bid,bidSize,qu
 }
 
 
-function createPlayer(name){
+export function createPlayer(name){
     const player={
         stock:0,
         money:0,
@@ -74,7 +74,7 @@ function createPlayer(name){
 }
 
 
-function createCurrentMarket(ask,askVolume,bid,bidVolume){
+export function createCurrentMarket(ask,askVolume,bid,bidVolume){
     let currentMarket={
         ask:ask,
         askVolume:askVolume,

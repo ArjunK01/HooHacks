@@ -1,12 +1,12 @@
 import React, {createContext, useState, useEffect, useContext} from 'react';
 import firebase from '../firebase/firebase';
-import {AuthContext} from './AuthProvider';
+//import {AuthContext} from './AuthProvider';
 
 const ApiContext = createContext();
 
 const ApiProvider = ({children}) => {
   const [pendingGames,setPendingGames]=useState([])
-  const {user} = useContext(AuthContext);
+  //const {user} = useContext(AuthContext);
 
   
 
@@ -30,13 +30,9 @@ const ApiProvider = ({children}) => {
 
 
   useEffect(() => {
-    if (!user) return;
-    console.log('USER:', user.uid);
-    user.name &&
-      (() => {
-        getPendingGames();
-      })();
-  }, [user]);
+    //if (!user) return;
+    getPendingGames();
+  }, []);
 
   return (
     <ApiContext.Provider

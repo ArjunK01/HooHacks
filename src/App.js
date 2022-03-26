@@ -5,6 +5,7 @@ import Header from "./Components/Header";
 import firebase from "./firebase/firebase";
 import Game from "./Components/Game";
 import Navigation from "./Navigation";
+import ContextWrapper from './Components/ContextWrapper';
 
 function App() {
   const [test,setTest]=useState("")
@@ -59,25 +60,22 @@ function App() {
       askVolume:20
     }
 
-    /*await firebase.firestore().collection('Games')
+    /*await firebase.firestore().collection('PendingGames')
         .add({
-          name: "sample",
+          name: "first pending game",
           players: [player1,player2],
-          round:2,
-          revealed:[36,45,49,31],
-          range:[30,50],
-          transactions:[transaction1,transaction2],
-          currentMarket: currentMarket
-        });
-    */
+        });*/
+    
 
   },[]);
 
   return (
+    <ContextWrapper>
     <SCContainer>
       <Header />
       <Navigation />
     </SCContainer>
+    </ContextWrapper>
   );
 }
 
