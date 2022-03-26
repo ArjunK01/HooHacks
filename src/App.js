@@ -1,18 +1,29 @@
-import React from 'react';
+import React,{useEffect, useState} from "react";
+import "./App.css";
+import styled from "styled-components";
+import Header from "./Components/Header";
+import firebase from "./firebase/firebase";
 
 function App() {
+  const [test,setTest]=useState("")
+  useEffect(() => {
+    firebase.firestore().collection("Users").doc('INtvrWH9fYNUHhq6gA4i').get().then((doc)=>{
+      console.log('here')
+      console.log(doc.data())
+    })
+  },[]);
+
   return (
-    <div style={{ textAlign: 'center' }}>
-      <header>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
+    <SCContainer>
+      <Header />
+      Hello
+    </SCContainer>
   );
 }
+
+const SCContainer = styled.div`
+  width: 900px;
+  margin: 0px auto;
+`;
 
 export default App;
