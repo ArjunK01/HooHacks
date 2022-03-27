@@ -10,7 +10,7 @@ const Navigation = () => {
   const { user } = useContext(AuthContext);
   return (
     <Routes>
-      <Route path="/" element={<p>home</p>}></Route>
+      <Route path="/" element={<Navigate to="/games" />}></Route>
       <Route
         path="login"
         element={user ? <Navigate to="/games" /> : <Login />}

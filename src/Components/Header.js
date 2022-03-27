@@ -9,7 +9,11 @@ const Header = () => {
   return (
     <Container>
       <Logo>Quazzi</Logo>
-      {user && <Button onClick={logout}>Sign Out</Button>}
+      {user && (
+        <Button onClick={logout} style={{ position: "absolute", right: 0 }}>
+          Sign Out
+        </Button>
+      )}
     </Container>
   );
 };
@@ -17,9 +21,10 @@ const Header = () => {
 const Container = styled.div`
   margin-top: 24px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 48px;
+  position: relative;
 `;
 
 const Logo = styled.p`
