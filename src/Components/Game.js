@@ -8,11 +8,16 @@ import firebase from "../firebase/firebase";
 const Game = () => {
   let {gameID}=useParams()
   const [game,setGame]=useState()
+  const [round,setRound]=useState()
   useEffect(()=>{
    firebase.firestore().collection('Games').doc(gameID).get().then((doc)=>{
      setGame(doc)
    })
   },[])
+
+  useEffect(()=>{
+
+  },[round])
 
   
 
