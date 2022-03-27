@@ -72,11 +72,11 @@ const Market = ({ onBuy, onSell, game, gameID}) => {
                   ? game.round + 1
                   : game.round,
               revealed: revealNew(),
-              currentMarket: {},
+             
             });
           return;
         }
-      }, 1000);
+      }, 50000);
     }
   }, []);
 

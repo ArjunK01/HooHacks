@@ -34,7 +34,7 @@ const Game = () => {
     if (game?.data()?.players.length < 4) return;
     let keeper = -1;
     for (let i = 0; i <= 3; i++) {
-      if (game?.data()?.players[i].name[1] == user.uid) {
+      if (game?.data()?.players[i].name[0] == user.username) {
         keeper = i;
       }
     }
@@ -47,7 +47,7 @@ const Game = () => {
     let price = game?.data().currentMarket.ask;
     let t = game?.data().transactions;
     let something = {
-      playerName: user.name,
+      playerName: user.username,
       makeMarket: false,
       sell: false,
       ask: 0,
@@ -66,6 +66,7 @@ const Game = () => {
       temp[mmIndex].money += price;
       temp[userIndex].stock += 1;
       temp[mmIndex].stock -= 1;
+      console.log(temp)
       firebase.firestore().collection("Games").doc(gameID).update({
         players: temp,
         transactions: t,
@@ -77,7 +78,7 @@ const Game = () => {
     let price = game?.data().currentMarket.bid;
     let t = game?.data().transactions;
     let something = {
-      playerName: user.name,
+      playerName: user.username,
       makeMarket: false,
       sell: true,
       ask: 0,
@@ -96,6 +97,7 @@ const Game = () => {
       temp[mmIndex].money -= price;
       temp[userIndex].stock -= 1;
       temp[mmIndex].stock += 1;
+      console.log(t)
       firebase.firestore().collection("Games").doc(gameID).update({
         players: temp,
         transactions: t,

@@ -51,7 +51,7 @@ const MarketForm = ({ value, setValue, game, gameID}) => {
           });
         return;
       }
-    }, 1000);
+    }, 5000);
   }, []);
   return (
     <Container>
