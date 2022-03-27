@@ -3,7 +3,7 @@ import Slider from "@mui/material/Slider";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
 import firebase from "../firebase/firebase";
-const MarketForm = ({ value, setValue, game, gameID}) => {
+const MarketForm = ({ value, setValue, game, gameID }) => {
   const [timer, setTimer] = useState(null);
 
   const handleChange = (event, newValue) => {
@@ -18,7 +18,7 @@ const MarketForm = ({ value, setValue, game, gameID}) => {
 
       setTimer(10 - Math.floor(delta / 1000)); // in seconds
       if (delta > 10000) {
-        clearInterval(refreshID);
+          console.log("herekj;lkj")
 
         let t = game > 0 ? [...game.transactions] : [];
         let something = {
@@ -51,7 +51,8 @@ const MarketForm = ({ value, setValue, game, gameID}) => {
           });
         return;
       }
-    }, 5000);
+    }, 1000);
+    return () => clearInterval(refreshID);
   }, []);
   return (
     <Container>

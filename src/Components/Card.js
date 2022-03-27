@@ -3,7 +3,9 @@ import styled from "styled-components";
 import colors from "../Constants/Colors";
 
 const Card = ({ number, back }) => {
-  return <>{back ? <CardContainer>50</CardContainer> : <BackContainer />}</>;
+  return (
+    <>{back ? <CardContainer>{number}</CardContainer> : <BackContainer />}</>
+  );
 };
 
 const CardContainer = styled.div`
