@@ -4,7 +4,7 @@ import colors from "../Constants/Colors";
 
 const Card = ({ number, back }) => {
   return (
-    <>{back ? <CardContainer>{number}</CardContainer> : <BackContainer />}</>
+    <>{!back ? <CardContainer>{number}</CardContainer> : <BackContainer />}</>
   );
 };
 
