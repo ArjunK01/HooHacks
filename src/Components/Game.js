@@ -278,7 +278,7 @@ const Game = () => {
             )}
           </MarketContainer>
           <MarketContainer>
-            {!game?.data().purchasing &&
+            {game && game.data() && !game?.data().purchasing &&
               game?.data().mm &&
               userIndex == game?.data().mm && (
                 <MarketForm value={value} setValue={setValue} />

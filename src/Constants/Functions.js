@@ -1,5 +1,6 @@
 
 
+
 export function createGame(name, players,range, transactions,currentMarket){
     let game={
         name:name,
@@ -18,10 +19,11 @@ export function createGame(name, players,range, transactions,currentMarket){
     
 }
 
-export function createPendingGame(name, players){
+export function createPendingGame(name, players, createdBy){
     let pendingGame={
         name:name,
-        players:players
+        players:players,
+        createdBy: createdBy
     }
     return pendingGame
 

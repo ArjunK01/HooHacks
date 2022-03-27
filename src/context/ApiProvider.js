@@ -1,29 +1,30 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import firebase from "../firebase/firebase";
-//import {AuthContext} from './AuthProvider';
+import {AuthContext} from './AuthProvider';
 import { createPendingGame } from "../Constants/Functions";
 
 import { collection, getDocs } from "firebase/firestore";
 const ApiContext = createContext();
 
 const ApiProvider = ({ children }) => {
-  const [pendingGames, setPendingGames] = useState([]);
-  //const {user} = useContext(AuthContext);
+  const [games, setGames] = useState([]);
+  const {user} = useContext(AuthContext);
+  //console.log(user.username);
 
-  const getPendingGames = () => {
+  const getGames = () => {
     return firebase
       .firestore()
-      .collection("PendingGames")
+      .collection("Games")
       .onSnapshot((querySnapshot) => {
-        const pendingGames = [];
+        const games = [];
         querySnapshot.forEach((documentSnapshot) => {
-          pendingGames.push({
+          games.push({
             ...documentSnapshot.data(),
             key: documentSnapshot.id,
           });
         });
-        console.log("PENDINGNGNNGNG", pendingGames);
-        setPendingGames(pendingGames);
+        
+        setGames(games);
       });
   };
 
@@ -41,21 +42,32 @@ const ApiProvider = ({ children }) => {
     return temp;
   };
 
-  const createGame = (name) => {
-    firebase
-      .firestore()
-      .collection("PendingGames")
-      .add(createPendingGame(name, 1));
+  const createGame = async (name) => {
+  
+      let k = await firebase.firestore().collection("Games").add({
+        name:name,
+        players:[{card:30,stock:0,money:0,name:[user.username,user.uid]}],
+        round:0,
+        revealed:[],
+        range:[30,50],
+        transactions:[],
+        currentMarket:{},
+        active:false, 
+        mm:0,
+        purchasing:false
+      })
+      return k.id
+  
   };
   useEffect(() => {
     //if (!user) return;
-    getPendingGames();
+    getGames();
   }, []);
 
   return (
     <ApiContext.Provider
       value={{
-        pendingGames,
+        games,
         createGame,
         getUsers,
       }}

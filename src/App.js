@@ -34,6 +34,20 @@ function App() {
       name: ["Michael", "ID"],
     };
 
+    const player3 = {
+      stock: 0,
+      money: 0,
+      card: 41,
+      name: ["Cara", "ID"],
+    };
+
+    const player4 = {
+      stock: 0,
+      money: 0,
+      card: 42,
+      name: ["Michael", "ID"],
+    };
+
     const transaction1 = {
       playerName: "Carl",
       makeMarket: false,

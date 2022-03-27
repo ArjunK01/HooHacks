@@ -5,12 +5,14 @@ import HeaderText from "../Components/HeaderText";
 import PendingGame from "../Components/PendingGame";
 import colors from "../Constants/Colors";
 import { ApiContext } from "../context/ApiProvider";
+import {Navigate} from 'react-router'
 
 const GamesList = () => {
-  const { pendingGames, createGame, getUsers } = useContext(ApiContext);
+  const { games, createGame, getUsers } = useContext(ApiContext);
 
   const [temp, setTemp] = useState([]);
   const [name, setName] = useState("");
+  const [nav,setNav]=useState(null)
 
   const [enter, setEnter] = useState(false);
 
@@ -22,6 +24,10 @@ const GamesList = () => {
     setTemp(k);
   }, []);
 
+  if(nav){
+    return <Navigate to={`/games/${nav}`}/>
+  }
+
   return (
     <Container>
       <GamesContainer>
@@ -29,16 +35,19 @@ const GamesList = () => {
           <HeaderText>Join a Game</HeaderText>
           {enter ? (
             <div style={{ display: "flex" }}>
-              <Input />
-              <Create onClick={() => createGame()}>Submit</Create>
+              <Input value={name} onChange={e => setName(e.target.value)}/>
+              <Create onClick={() => {
+                let id=createGame(name)
+                setNav(id)
+              }}>Submit</Create>
             </div>
           ) : (
             <Create onClick={() => setEnter((e) => !e)}>Create Game</Create>
           )}
         </Top>
-        <PendingGame />
-        <PendingGame />
-        <PendingGame />
+        {games.map((game)=><PendingGame game={game}/>
+
+      )}
       </GamesContainer>
       <LeaderboardContainer>
         <HeaderText>Leaderboard</HeaderText>
