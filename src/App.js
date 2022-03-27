@@ -8,12 +8,6 @@ import Navigation from "./Navigation";
 import ContextWrapper from "./Components/ContextWrapper";
 
 function App() {
-<<<<<<< HEAD
-  const [test,setTest]=useState("")
-  useEffect(async() => {
-    firebase.firestore().collection("Users").doc('INtvrWH9fYNUHhq6gA4i').get().then((doc)=>{
-    })
-=======
   const [test, setTest] = useState("");
   useEffect(async () => {
     firebase
@@ -25,7 +19,6 @@ function App() {
         console.log("here");
         console.log(doc.data());
       });
->>>>>>> 8ced59513df34e0505013af7084365df0063cf55
 
     const player1 = {
       stock: 0,
@@ -34,34 +27,12 @@ function App() {
       name: ["Cara", "ID"],
     };
 
-<<<<<<< HEAD
-    const player2={
-      stock:0,
-      money:0,
-      card:43,
-      name:['Michael','ID']
-    }
-    const player3={
-      stock:0,
-      money:0,
-      card:36,
-      name:['Sierra', 'ID']
-    }
-
-    const player4={
-      stock:0,
-      money:0,
-      card:44,
-      name:['Thomas','ID']
-    }
-=======
     const player2 = {
       stock: 0,
       money: 0,
       card: 43,
       name: ["Michael", "ID"],
     };
->>>>>>> 8ced59513df34e0505013af7084365df0063cf55
 
     const transaction1 = {
       playerName: "Carl",
@@ -107,14 +78,7 @@ function App() {
           mm:0,
           purchasing:false
         });*/
-<<<<<<< HEAD
-        
-    
-
-  },[]);
-=======
   }, []);
->>>>>>> 8ced59513df34e0505013af7084365df0063cf55
 
   return (
     <ContextWrapper>

@@ -3,16 +3,11 @@ import Slider from "@mui/material/Slider";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
 
-const MarketForm = ({value, setValue}) => {
+const MarketForm = ({ value, setValue }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 8ced59513df34e0505013af7084365df0063cf55
   return (
     <Container>
       <Row>

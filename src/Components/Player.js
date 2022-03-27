@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
-const Player = () => {
+const Player = ({ player }) => {
   return (
     <Container>
       <Video></Video>
-      <Info>Player</Info>
+      <Info>
+        {player.name[0]} - {player.stock} stock - ${player.money}
+      </Info>
     </Container>
   );
 };
