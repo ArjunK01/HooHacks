@@ -1,11 +1,61 @@
-import React from "react";
+import React,{useContext, useEffect,useState} from "react";
+import { Navigate } from "react-router";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
-const PendingGame = ({ name }) => {
+import {AuthContext} from "../context/AuthProvider";
+import {ApiContext} from "../context/ApiProvider"
+import firebase from "../firebase/firebase"
+
+
+const PendingGame = ({ game }) => {
+
+  const { pendingGames } = useContext(ApiContext);
+  const { user } = useContext(AuthContext);
+  const [gameKey, setGameKey]=useState(null)
+
+  const [nav, setNav] = useState(false)
+
+  const joinGame = (user,key) => {
+    
+    firebase.firestore().collection('PendingGames').doc(key).update({
+      players: [...game.players, {username:user.username, id:user.uid}]
+    }).then(()=>{
+      setGameKey(gameKey)
+    })
+
+
+  }
+
+  useEffect(()=>{
+    console.log('in use effect')
+    console.log(user.uid)
+    for(let g of pendingGames){
+      for(let p of g.players){
+        if(p.username == user.username){
+          setNav(true)
+          
+        }
+      }
+
+    }
+    // pendingGames.find(game=>{
+    //   if(game.players.find(g=>g.id==user.uid) && game.players.length==4){
+    //     console.log('in hereee');
+    //     setNav(true)
+
+    //   }
+    // })
+
+  },[pendingGames,gameKey])
+
+        if(nav) {
+        return <Navigate to={`/games/${game.key}`}/>
+        }
   return (
     <Container>
-      <Name>Shart Game</Name>
-      <Creator>Created by Rishi</Creator>
+      
+      <Name>{game.name}</Name>
+      <Creator>{game.createdBy}</Creator>
       <Players>
         <svg
           style={{ width: 30, opacity: 0.7 }}
@@ -22,9 +72,10 @@ const PendingGame = ({ name }) => {
             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
           />
         </svg>
-        3/4
+        {game.players.length}/4
       </Players>
-      <Join>Join game</Join>
+      {/*<Join>Join game</Join>*/}
+      { game.players.find(m => m.username == user.username)?<p>Waiting for more players</p> :<Join onClick={() => joinGame(user,game.key)}>Join Game</Join> }
     </Container>
   );
 };
@@ -63,6 +114,14 @@ const Players = styled.div`
   font-size: 18px;
   align-items: center;
   gap: 6px;
+`;
+
+const Create = styled.div`
+  font-size: 18px;
+  border: 2px solid ${colors.gray500};
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
 `;
 
 export default PendingGame;

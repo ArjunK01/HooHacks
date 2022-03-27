@@ -20,20 +20,20 @@ const GamesList = () => {
           <HeaderText>Join a Game</HeaderText>
           {enter ? (
             <div style={{ display: "flex" }}>
-              <Input />
-              <Create onClick={() => createGame()}>Submit</Create>
+              <Input value={name} onChange={e => setName(e.target.value)}/>
+              <Create onClick={() => createGame(name)}>Submit</Create>
             </div>
           ) : (
             <Create onClick={() => setEnter((e) => !e)}>Create Game</Create>
           )}
         </Top>
-        <PendingGame />
-        <PendingGame />
-        <PendingGame />
+        {pendingGames.map((game)=><PendingGame game={game}/>
+
+      )}
       </GamesContainer>
       <LeaderboardContainer>
         <HeaderText>Leaderboard</HeaderText>
-        {JSON.stringify(pendingGames)}
+        {/* {JSON.stringify(pendingGames)} */}
       </LeaderboardContainer>
     </Container>
   );
