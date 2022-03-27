@@ -11,8 +11,6 @@ function App() {
   const [test,setTest]=useState("")
   useEffect(async() => {
     firebase.firestore().collection("Users").doc('INtvrWH9fYNUHhq6gA4i').get().then((doc)=>{
-      console.log('here')
-      console.log(doc.data())
     })
 
     const player1={
@@ -27,6 +25,19 @@ function App() {
       money:0,
       card:43,
       name:['Michael','ID']
+    }
+    const player3={
+      stock:0,
+      money:0,
+      card:36,
+      name:['Sierra', 'ID']
+    }
+
+    const player4={
+      stock:0,
+      money:0,
+      card:44,
+      name:['Thomas','ID']
     }
 
     const transaction1={
@@ -60,11 +71,20 @@ function App() {
       askVolume:20
     }
 
-    /*await firebase.firestore().collection('PendingGames')
+    /*await firebase.firestore().collection('Games')
         .add({
-          name: "first pending game",
-          players: [player1,player2],
+          name: "first game",
+          players: [player1,player2,player3,player4],
+          round:0,
+          revealed:[],
+          range:[30,50],
+          transactions:[transaction1, transaction2],
+          currentMarket:currentMarket,
+          active:true,
+          mm:0,
+          purchasing:false
         });*/
+        
     
 
   },[]);
