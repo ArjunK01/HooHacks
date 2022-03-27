@@ -3,7 +3,7 @@ import Slider from "@mui/material/Slider";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
 import firebase from "../firebase/firebase";
-const MarketForm = ({ value, setValue, game, gameID}) => {
+const MarketForm = ({ value, setValue, game, gameID }) => {
   const [timer, setTimer] = useState(null);
 
   const handleChange = (event, newValue) => {
@@ -40,7 +40,7 @@ const MarketForm = ({ value, setValue, game, gameID}) => {
           .collection("Games")
           .doc(gameID)
           .update({
-            purchasing: true,
+            // purchasing: true,
             currentMarket: {
               ask: value[1],
               askVolume: 5,
@@ -52,6 +52,7 @@ const MarketForm = ({ value, setValue, game, gameID}) => {
         return;
       }
     }, 1000);
+    return () => clearInterval(refreshID);
   }, []);
   return (
     <Container>

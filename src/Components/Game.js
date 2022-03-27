@@ -30,7 +30,7 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    if(!game?.data()) return
+    if (!game?.data()) return;
     if (game?.data()?.players.length < 4) return;
     let keeper = -1;
     for (let i = 0; i <= 3; i++) {
@@ -106,7 +106,7 @@ const Game = () => {
   return (
     <div>
       <HeaderText>Game 1</HeaderText>
-USERINDEX{userIndex}
+      USERINDEX{userIndex}
       <h1>{game?.data()?.round}</h1>
       <h1>{marketMaker}</h1>
       <div style={{ height: 18 }}></div>
@@ -117,23 +117,17 @@ USERINDEX{userIndex}
           ))}
         </PlayerContainer>
         <GameInfo>
+          <HeaderText>Revealed Cards</HeaderText>
+          <div style={{ height: 8 }}></div>
           <RevealedCardsContainer>
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
-            <Card />
+            {game?.data()?.revealed.length > 0 &&
+              game?.data()?.revealed.map((r) => <Card number={r} />)}
           </RevealedCardsContainer>
           <MarketContainer>
             {game?.data()?.purchasing && userIndex !== game?.data().mm ? (
               <Market
                 game={game.data()}
                 gameID={gameID}
-
                 onBuy={() => {
                   buy();
                 }}
@@ -148,8 +142,9 @@ USERINDEX{userIndex}
             )}
           </MarketContainer>
           <MarketContainer>
-            {game && game.data() && !game?.data().purchasing &&
-
+            {game &&
+              game.data() &&
+              !game?.data().purchasing &&
               userIndex == game?.data().mm && (
                 <MarketForm
                   value={value}
@@ -163,10 +158,9 @@ USERINDEX{userIndex}
           <Transactions>
             <HeaderText>transactions</HeaderText>
             <div style={{ marginBottom: 12 }}></div>
-            {JSON.stringify(game?.data()?.transactions)}
-            <Transaction />
-            <Transaction />
-            <Transaction />
+            {JSON.stringify(
+              game?.data()?.transactions.map((t) => <Transaction t={t} />)
+            )}
           </Transactions>
         </GameInfo>
       </Container>
@@ -180,11 +174,13 @@ const Container = styled.div`
 `;
 
 const PlayerContainer = styled.div`
-  width: 80%;
+  width: 400px;
+  border: 1px solid white;
 `;
 
 const GameInfo = styled.div`
-  width: 100%;
+  flex: 1;
+  border: 1px solid white;
 `;
 
 const Transactions = styled.div``;
