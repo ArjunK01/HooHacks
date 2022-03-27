@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
 
-const Market = () => {
+const Market = ({onBuy, onSell}) => {
   return (
     <Container>
       <MarketContainer>
@@ -14,8 +14,8 @@ const Market = () => {
             <SmallNum>x 5</SmallNum>
           </div>
         </Section>
-        <Transact>Sell</Transact>
-        <Transact>Buy</Transact>
+        <Transact onClick={onBuy}>Sell</Transact>
+        <Transact onClick={onSell}>Buy</Transact>
         <Section>
           <SectionHeader>ASK</SectionHeader>
           <div style={{ display: "flex", alignItems: "baseline" }}>

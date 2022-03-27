@@ -5,13 +5,28 @@ import HeaderText from "../Components/HeaderText";
 import PendingGame from "../Components/PendingGame";
 import colors from "../Constants/Colors";
 import { ApiContext } from "../context/ApiProvider";
+import {Navigate} from 'react-router'
 
 const GamesList = () => {
-  const { pendingGames, createGame } = useContext(ApiContext);
+  const { games, createGame, getUsers } = useContext(ApiContext);
 
+  const [temp, setTemp] = useState([]);
   const [name, setName] = useState("");
+  const [nav,setNav]=useState(null)
 
   const [enter, setEnter] = useState(false);
+
+  useEffect(async () => {
+    let k = [];
+    await getUsers().then((r) => {
+      k = r;
+    });
+    setTemp(k);
+  }, []);
+
+  if(nav){
+    return <Navigate to={`/games/${nav}`}/>
+  }
 
   return (
     <Container>
@@ -21,19 +36,32 @@ const GamesList = () => {
           {enter ? (
             <div style={{ display: "flex" }}>
               <Input value={name} onChange={e => setName(e.target.value)}/>
-              <Create onClick={() => createGame(name)}>Submit</Create>
+              <Create onClick={() => {
+                let id=createGame(name)
+                setNav(id)
+              }}>Submit</Create>
             </div>
           ) : (
             <Create onClick={() => setEnter((e) => !e)}>Create Game</Create>
           )}
         </Top>
-        {pendingGames.map((game)=><PendingGame game={game}/>
+        {games.map((game)=><PendingGame game={game}/>
 
       )}
       </GamesContainer>
       <LeaderboardContainer>
         <HeaderText>Leaderboard</HeaderText>
-        {/* {JSON.stringify(pendingGames)} */}
+        <ol style={{ marginLeft: -20, marginTop: 12 }}>
+          {temp
+            .sort((a, b) => a.balance - b.balance)
+            .map((r) => (
+              <li style={{ marginBottom: 4 }}>
+                <p style={{ fontSize: 20 }}>
+                  {r.username} - ${r.balance}
+                </p>
+              </li>
+            ))}
+        </ol>
       </LeaderboardContainer>
     </Container>
   );

@@ -34,6 +34,20 @@ function App() {
       name: ["Michael", "ID"],
     };
 
+    const player3 = {
+      stock: 0,
+      money: 0,
+      card: 41,
+      name: ["Cara", "ID"],
+    };
+
+    const player4 = {
+      stock: 0,
+      money: 0,
+      card: 42,
+      name: ["Michael", "ID"],
+    };
+
     const transaction1 = {
       playerName: "Carl",
       makeMarket: false,
@@ -65,10 +79,18 @@ function App() {
       askVolume: 20,
     };
 
-    /*await firebase.firestore().collection('PendingGames')
+    /*await firebase.firestore().collection('Games')
         .add({
-          name: "first pending game",
-          players: [player1,player2],
+          name: "first game",
+          players: [player1,player2,player3,player4],
+          round:0,
+          revealed:[],
+          range:[30,50],
+          transactions:[transaction1, transaction2],
+          currentMarket:currentMarket,
+          active:true,
+          mm:0,
+          purchasing:false
         });*/
   }, []);
 

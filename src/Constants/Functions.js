@@ -10,7 +10,9 @@ export function createGame(name, players,range, transactions,currentMarket){
         range:range,
         transactions:transactions,
         currentMarket:currentMarket,
-        active:false
+        active:false, 
+        mm:0,
+        purchasing:false
     }
     return game
 

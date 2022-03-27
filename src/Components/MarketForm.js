@@ -3,8 +3,7 @@ import Slider from "@mui/material/Slider";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
 
-const MarketForm = () => {
-  const [value, setValue] = useState([20, 30]);
+const MarketForm = ({ value, setValue }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
