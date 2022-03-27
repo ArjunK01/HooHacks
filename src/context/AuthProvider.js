@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -15,9 +15,24 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
 
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        firebase
+          .firestore()
+          .collection("Users")
+          .doc(firebaseUser.uid)
+          .get()
+          .then(function (doc) {
+            setUser(doc.data());
+          });
+      } else {
+        setTimeout(() => {
+          setUser(firebaseUser);
+        }, 300);
+      }
+    });
+  }, []);
 
   const register = async (registerEmail, registerPassword, username) => {
     try {
