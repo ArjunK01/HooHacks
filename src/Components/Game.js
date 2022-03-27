@@ -33,6 +33,7 @@ const Game = () => {
 
   useEffect(() => {
     if (!game?.data()) return;
+    if (game.players.length < 4) return;
     setMarketMaker(game?.data()?.players[game?.data().mm]?.name[0]);
 
     let keeper = -1;
@@ -44,6 +45,7 @@ const Game = () => {
     setUserIndex(keeper);
 
     let start = Date.now();
+    console.log("SETTING MM INTERVAL");
     let refreshID = setInterval(() => {
       let delta = Date.now() - start; // milliseconds elapsed since start
 
@@ -75,7 +77,7 @@ const Game = () => {
           .collection("Games")
           .doc(gameID)
           .update({
-            // purchasing: true,
+            purchasing: true,
             currentMarket: {
               // ask: value[1],
               // askVolume: game?.data().currentMarket.askVolume,
@@ -91,13 +93,15 @@ const Game = () => {
         return;
       }
     }, 1000);
-  }, [game?.data()?.mm]);
+  }, [game?.date()?.players.length, game?.data()?.mm]);
 
   useEffect(() => {
     if (!game?.data()) return;
 
     if (game?.data()?.purchasing == true) {
       let start = Date.now();
+      console.log("SETTING PURCHASING INTERVAL");
+
       let refreshID = setInterval(() => {
         let delta = Date.now() - start; // milliseconds elapsed since start
 
@@ -223,6 +227,9 @@ const Game = () => {
       });
     }
   }
+
+  if (!game || !game.data()) return <p>loading</p>;
+  if (game.data().players.length < 4) return <p>Waiting for more players</p>;
 
   return (
     <div>
