@@ -7,11 +7,20 @@ import colors from "../Constants/Colors";
 import { ApiContext } from "../context/ApiProvider";
 
 const GamesList = () => {
-  const { pendingGames, createGame } = useContext(ApiContext);
+  const { pendingGames, createGame, getUsers } = useContext(ApiContext);
 
+  const [temp, setTemp] = useState([]);
   const [name, setName] = useState("");
 
   const [enter, setEnter] = useState(false);
+
+  useEffect(async () => {
+    let k = [];
+    await getUsers().then((r) => {
+      k = r;
+    });
+    setTemp(k);
+  }, []);
 
   return (
     <Container>
@@ -33,7 +42,17 @@ const GamesList = () => {
       </GamesContainer>
       <LeaderboardContainer>
         <HeaderText>Leaderboard</HeaderText>
-        {JSON.stringify(pendingGames)}
+        <ol style={{ marginLeft: -20, marginTop: 12 }}>
+          {temp
+            .sort((a, b) => a.balance - b.balance)
+            .map((r) => (
+              <li style={{ marginBottom: 4 }}>
+                <p style={{ fontSize: 20 }}>
+                  {r.username} - ${r.balance}
+                </p>
+              </li>
+            ))}
+        </ol>
       </LeaderboardContainer>
     </Container>
   );

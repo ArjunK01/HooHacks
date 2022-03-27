@@ -2,6 +2,8 @@ import React, { createContext, useState, useEffect, useContext } from "react";
 import firebase from "../firebase/firebase";
 //import {AuthContext} from './AuthProvider';
 import { createPendingGame } from "../Constants/Functions";
+
+import { collection, getDocs } from "firebase/firestore";
 const ApiContext = createContext();
 
 const ApiProvider = ({ children }) => {
@@ -25,6 +27,20 @@ const ApiProvider = ({ children }) => {
       });
   };
 
+  const getUsers = async () => {
+    const querySnapshot = await getDocs(
+      collection(firebase.firestore(), "Users")
+    );
+    let temp = [];
+
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      temp.push(doc.data());
+    });
+
+    return temp;
+  };
+
   const createGame = (name) => {
     firebase
       .firestore()
@@ -41,6 +57,7 @@ const ApiProvider = ({ children }) => {
       value={{
         pendingGames,
         createGame,
+        getUsers,
       }}
     >
       {children}

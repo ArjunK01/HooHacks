@@ -29,7 +29,6 @@ const Login = () => {
             }}
           />
           <Input
-            type="password"
             placeholder="Password"
             onChange={(event) => {
               setRegisterPassword(event.target.value);
@@ -59,7 +58,6 @@ const Login = () => {
             }}
           />
           <Input
-            type="password"
             placeholder="Password..."
             onChange={(event) => {
               setLoginPassword(event.target.value);
@@ -105,6 +103,7 @@ const Btn = styled.div`
   place-content: center;
   font-size: 18px;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 const Bottom = styled.p`
