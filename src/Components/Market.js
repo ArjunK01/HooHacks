@@ -50,8 +50,8 @@ const Market = ({ onBuy, onSell, game, gameID }) => {
     let refreshID = setInterval(() => {
       let delta = Date.now() - start; // milliseconds elapsed since start
 
-      setTimer(5 - Math.floor(delta / 1000)); // in seconds
-      if (delta > 5000) {
+      setTimer(.5 - Math.floor(delta / 1000)); // in seconds
+      if (delta > 500) {
 
         firebase
           .firestore()

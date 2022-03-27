@@ -24,9 +24,8 @@ const GamesList = () => {
     setTemp(k);
   }, []);
 
-  useEffect(() => {}, [games]);
 
-  if (games) {
+  if (nav) {
     return <Navigate to={`/games/${nav}`} />;
   }
 

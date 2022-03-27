@@ -9,7 +9,6 @@ const Header = () => {
   return (
     <Container>
       <Logo>Quazzi</Logo>
-      {JSON.stringify(user)}
       {user && (
         <Button onClick={logout} style={{ position: "absolute", right: 0 }}>
           Sign Out

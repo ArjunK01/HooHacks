@@ -16,8 +16,8 @@ const MarketForm = ({ value, setValue, game, gameID }) => {
     let refreshID = setInterval(() => {
       let delta = Date.now() - start; // milliseconds elapsed since start
 
-      setTimer(10 - Math.floor(delta / 1000)); // in seconds
-      if (delta > 10000) {
+      setTimer(.5 - Math.floor(delta / 1000)); // in seconds
+      if (delta > 500) {
           console.log("herekj;lkj")
 
         let t = game > 0 ? [...game.transactions] : [];

@@ -9,6 +9,7 @@ import Market from "./Market";
 import MarketForm from "./MarketForm";
 import Transaction from "./Transaction";
 import { AuthContext } from "../context/AuthProvider";
+import GamesList from "../Screens/GamesList";
 //import { ApiContext } from "../context/ApiProvider";
 const Game = () => {
   let { gameID } = useParams();
@@ -18,6 +19,9 @@ const Game = () => {
   const [value, setValue] = useState([130, 150]);
   const { user } = useContext(AuthContext);
   const [userIndex, setUserIndex] = useState();
+  const [gameOver,setGameOver]=useState(false)
+  const [total, setTotal] = useState(null)
+  const [endValues, setEndValues] = useState(null)
 
   useEffect(() => {
     firebase
@@ -30,8 +34,37 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
+   
     if (!game?.data()) return;
     if (game?.data()?.players.length < 4) return;
+    if (game.data().round==5){
+      setMarketMaker(null)
+      
+      setGameOver(true)
+      let total=0
+      for(let i=0;i<=3;i+=1){
+        total+=game?.data().players[i].card
+      }
+
+      setTotal(total)
+
+      let temp2= []
+      for(let i =0; i < 4; i++){
+        temp2[i] = {}
+        temp2[i].name = game.data().players[i].name[0]
+        temp2[i].card = game.data().players[i].card
+        temp2[i].end = game.data().players[i].stock * total
+      }
+
+      setEndValues(temp2)
+
+      let temp = game.data().players[userIndex].stock*total
+        firebase.firestore().collection('Users').doc(user.uid).update({
+          balance: user.balance + temp
+        })
+
+      return 
+    }
     let keeper = -1;
     for (let i = 0; i <= 3; i++) {
       console.log(game?.data()?.players[i].name[0] == user.username, i)
@@ -105,6 +138,9 @@ const Game = () => {
         transactions: t,
       });
     }
+  }
+  if(gameOver){
+    return <div> Game Over, total was {total}. {JSON.stringify(endValues)}</div>
   }
 
   return (
