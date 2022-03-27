@@ -24,9 +24,7 @@ const GamesList = () => {
     setTemp(k);
   }, []);
 
-  useEffect(() => {}, [games]);
-
-  if (games) {
+  if (nav) {
     return <Navigate to={`/games/${nav}`} />;
   }
 
@@ -39,8 +37,8 @@ const GamesList = () => {
             <div style={{ display: "flex" }}>
               <Input value={name} onChange={(e) => setName(e.target.value)} />
               <Create
-                onClick={() => {
-                  let id = createGame(name);
+                onClick={async () => {
+                  let id = await createGame(name);
                   setNav(id);
                 }}
               >
