@@ -50,8 +50,8 @@ const Market = ({ onBuy, onSell, game, gameID }) => {
     let refreshID = setInterval(() => {
       let delta = Date.now() - start; // milliseconds elapsed since start
 
-      setTimer(5 - Math.floor(delta / 1000)); // in seconds
-      if (delta > 5000) {
+      setTimer(15 - Math.floor(delta / 1000)); // in seconds
+      if (delta > 15000) {
         let ttt = [...game.remainingCards];
         let ad = ttt.pop();
         firebase
