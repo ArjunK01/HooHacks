@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
+import { AuthContext } from "../context/AuthProvider";
 import Button from "./Button";
 
 const Header = () => {
+  const { user, logout } = useContext(AuthContext);
   return (
     <Container>
       <Logo>Quazzi</Logo>
-      <Button onClick={() => {}}>Find a game</Button>
+      {user && <Button onClick={logout}>Sign Out</Button>}
     </Container>
   );
 };

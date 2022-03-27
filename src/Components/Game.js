@@ -34,7 +34,17 @@ const Game = () => {
           <Player />
         </PlayerContainer>
         <GameInfo>
-          <Card />
+          <RevealedCardsContainer>
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+            <Card />
+          </RevealedCardsContainer>
           <MarketContainer>
             <Market />
           </MarketContainer>
@@ -75,6 +85,7 @@ const MarketContainer = styled.div`
 `;
 
 const RevealedCardsContainer = styled.div`
-  border: 1px solid white;
+  display: flex;
+  gap: 18px;
 `;
 export default Game;

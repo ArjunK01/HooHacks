@@ -9,12 +9,6 @@ const MarketForm = () => {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    if (value[1] - value[0] > 20) {
-      setValue(value[0], value[1] - 1);
-    }
-  }, [value[0]]);
-
   return (
     <Container>
       <Row>
