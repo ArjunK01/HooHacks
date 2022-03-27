@@ -4,7 +4,6 @@ import colors from "../Constants/Colors";
 const Player = ({ player }) => {
   return (
     <Container>
-      <Video></Video>
       <Info>
         {player.name[0]} - {player.stock} stock - ${player.money}
       </Info>
