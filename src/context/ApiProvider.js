@@ -1,4 +1,4 @@
-import React, {createContext, useState, useEffect} from 'react';
+/*import React, {createContext, useState, useEffect} from 'react';
 import {useContext} from 'react/cjs/react.development';
 import auth from '@react-native-firebase/auth';
 import {Text, View} from 'react-native';
@@ -101,4 +101,4 @@ const AuthProvider = ({children}) => {
 
 export default AuthProvider;
 
-export {AuthContext};
+export {AuthContext};*/

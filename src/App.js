@@ -2,9 +2,10 @@ import React,{useEffect, useState} from "react";
 import "./App.css";
 import styled from "styled-components";
 import Header from "./Components/Header";
-import firebase from "./firebase/firebase";
+import firebase from "./firebase";
 import Game from "./Components/Game";
 import Navigation from "./Navigation";
+import ContextWrapper from "./Components/ContextWrapper"
 
 function App() {
   const [test,setTest]=useState("")
@@ -74,10 +75,12 @@ function App() {
   },[]);
 
   return (
-    <SCContainer>
-      <Header />
-      <Navigation />
-    </SCContainer>
+    <ContextWrapper>
+     <SCContainer>
+        <Header />
+        <Navigation />
+      </SCContainer>
+    </ContextWrapper>
   );
 }
 
