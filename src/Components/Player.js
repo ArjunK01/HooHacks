@@ -5,7 +5,7 @@ const Player = ({ player }) => {
   return (
     <Container>
       <Info>
-        {player.name[0]} - {player.stock} stock - ${player.money}
+        {player.name[0]}, {player.stock} stock, ${player.money}
       </Info>
     </Container>
   );
@@ -14,9 +14,10 @@ const Player = ({ player }) => {
 const Container = styled.div`
   background-color: ${colors.gray};
   border-radius: 4px;
-  margin-bottom: 16px;
+  margin-bottom: 32px;
   display: flex;
-  height: 144px;
+  height: 90px;
+  align-items: center;
 `;
 
 const Video = styled.div`

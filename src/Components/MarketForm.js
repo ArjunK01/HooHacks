@@ -3,60 +3,93 @@ import Slider from "@mui/material/Slider";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
 import firebase from "../firebase/firebase";
-const MarketForm = ({ value, setValue, game, gameID }) => {
+const MarketForm = ({ game, gameID }) => {
   const [timer, setTimer] = useState(null);
+  const [value, setValue] = useState([130, 150]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    let start = Date.now();
-    console.log("SETTING MM INTERVAL");
-    let refreshID = setInterval(() => {
-      let delta = Date.now() - start; // milliseconds elapsed since start
-
-      setTimer(.5 - Math.floor(delta / 1000)); // in seconds
-      if (delta > 500) {
-          console.log("herekj;lkj")
-
-        let t = game > 0 ? [...game.transactions] : [];
-        let something = {
-          playerName: "arjun",
-          makeMarket: true,
-          sell: true,
-          // ask: value[1],
+  const sub = () => {
+    let t = game > 0 ? [...game.transactions] : [];
+    let something = {
+      playerName: "arjun",
+      makeMarket: true,
+      sell: true,
+      // ask: value[1],
+      ask: value[1],
+      bid: value[0],
+      askSize: 5,
+      // bid: value[0],
+      bidSize: 5,
+      quantity: 0,
+      for: 0,
+    };
+    t.push(something);
+    console.log("VALUE", value);
+    firebase
+      .firestore()
+      .collection("Games")
+      .doc(gameID)
+      .update({
+        purchasing: true,
+        currentMarket: {
           ask: value[1],
+          askVolume: 5,
           bid: value[0],
-          askSize: 5,
-          // bid: value[0],
-          bidSize: 5,
-          quantity: 0,
-          for: 0,
-        };
-        t.push(something);
-        firebase
-          .firestore()
-          .collection("Games")
-          .doc(gameID)
-          .update({
-            purchasing: true,
-            currentMarket: {
-              ask: value[1],
-              askVolume: 5,
-              bid: value[0],
-              bidVolume: 5,
-            },
-            transactions: t,
-          });
-        return;
-      }
-    }, 1000);
-    return () => clearInterval(refreshID);
-  }, []);
+          bidVolume: 5,
+        },
+        transactions: t,
+      });
+  };
+
+  // useEffect(() => {
+  //   let start = Date.now();
+  //   console.log("SETTING MM INTERVAL");
+  //   let refreshID = setInterval(() => {
+  //     let delta = Date.now() - start; // milliseconds elapsed since start
+
+  //     setTimer(5 - Math.floor(delta / 1000)); // in seconds
+  //     if (delta > 5000) {
+  //       let t = game > 0 ? [...game.transactions] : [];
+  //       let something = {
+  //         playerName: "arjun",
+  //         makeMarket: true,
+  //         sell: true,
+  //         // ask: value[1],
+  //         ask: value[1],
+  //         bid: value[0],
+  //         askSize: 5,
+  //         // bid: value[0],
+  //         bidSize: 5,
+  //         quantity: 0,
+  //         for: 0,
+  //       };
+  //       t.push(something);
+  //       console.log("VALUE", value);
+  //       firebase
+  //         .firestore()
+  //         .collection("Games")
+  //         .doc(gameID)
+  //         .update({
+  //           purchasing: true,
+  //           currentMarket: {
+  //             ask: value[1],
+  //             askVolume: 5,
+  //             bid: value[0],
+  //             bidVolume: 5,
+  //           },
+  //           transactions: t,
+  //         });
+  //       return;
+  //     }
+  //   }, 1000);
+  //   return () => clearInterval(refreshID);
+  // }, []);
   return (
     <Container>
-      Timer: {timer}
+      {/* Timer: {timer} */}
       <Row>
         <Section>
           <Label>Bid: </Label>
@@ -72,7 +105,7 @@ const MarketForm = ({ value, setValue, game, gameID }) => {
             onChange={(e) => setValue([value[0], e.target.value])}
           />
         </Section>
-        <Submit>
+        <Submit onClick={sub}>
           Submit Market
           <svg
             style={{ height: 20, marginBottom: 2, marginLeft: 2 }}

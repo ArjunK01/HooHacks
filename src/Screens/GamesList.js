@@ -57,7 +57,7 @@ const GamesList = () => {
         <HeaderText>Leaderboard</HeaderText>
         <ol style={{ marginLeft: -20, marginTop: 12 }}>
           {temp
-            .sort((a, b) => a.balance - b.balance)
+            .sort((a, b) => b.balance - a.balance)
             .map((r) => (
               <li style={{ marginBottom: 4 }}>
                 <p style={{ fontSize: 20 }}>

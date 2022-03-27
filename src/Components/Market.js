@@ -50,9 +50,10 @@ const Market = ({ onBuy, onSell, game, gameID }) => {
     let refreshID = setInterval(() => {
       let delta = Date.now() - start; // milliseconds elapsed since start
 
-      setTimer(.5 - Math.floor(delta / 1000)); // in seconds
-      if (delta > 500) {
-
+      setTimer(5 - Math.floor(delta / 1000)); // in seconds
+      if (delta > 5000) {
+        let ttt = [...game.remainingCards];
+        let ad = ttt.pop();
         firebase
           .firestore()
           .collection("Games")
@@ -61,8 +62,8 @@ const Market = ({ onBuy, onSell, game, gameID }) => {
             purchasing: false,
             mm: game.mm == 3 ? 0 : game.mm + 1,
             round: game.mm == 3 ? game.round + 1 : game.round,
-            revealed: revealNew(),
-            currentMarket: {},
+            revealed: [...game.revealed, ad],
+            remainingCards: ttt,
           });
         return;
       }
@@ -73,22 +74,23 @@ const Market = ({ onBuy, onSell, game, gameID }) => {
 
   return (
     <Container>
-      Timer: {timer}
+      <p style={{ fontSize: 18 }}>Timer: {timer}</p>
+      <div style={{ marginTop: 12 }}></div>
       <MarketContainer>
         <Section>
           <SectionHeader>BID</SectionHeader>
           <div style={{ display: "flex", alignItems: "baseline" }}>
-            <BigNum>90</BigNum>
-            <SmallNum>x 5</SmallNum>
+            <BigNum>{game.currentMarket.bid}</BigNum>
+            <SmallNum>x {game.currentMarket.bidVolume}</SmallNum>
           </div>
         </Section>
-        <Transact onClick={onBuy}>Sell</Transact>
-        <Transact onClick={onSell}>Buy</Transact>
+        <Transact onClick={onSell}>Sell</Transact>
+        <Transact onClick={onBuy}>Buy</Transact>
         <Section>
           <SectionHeader>ASK</SectionHeader>
           <div style={{ display: "flex", alignItems: "baseline" }}>
-            <BigNum>110</BigNum>
-            <SmallNum>x 5</SmallNum>
+            <BigNum>{game.currentMarket.ask}</BigNum>
+            <SmallNum>x {game.currentMarket.askVolume}</SmallNum>
           </div>
         </Section>
       </MarketContainer>

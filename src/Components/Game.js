@@ -10,18 +10,21 @@ import MarketForm from "./MarketForm";
 import Transaction from "./Transaction";
 import { AuthContext } from "../context/AuthProvider";
 import GamesList from "../Screens/GamesList";
+import { Navigate, Link } from "react-router-dom";
+
+import { doc, deleteDoc } from "firebase/firestore";
 //import { ApiContext } from "../context/ApiProvider";
 const Game = () => {
   let { gameID } = useParams();
   const [game, setGame] = useState();
   const [newestReveal, setNewestReveal] = useState();
   const [marketMaker, setMarketMaker] = useState();
-  const [value, setValue] = useState([130, 150]);
   const { user } = useContext(AuthContext);
   const [userIndex, setUserIndex] = useState();
-  const [gameOver,setGameOver]=useState(false)
-  const [total, setTotal] = useState(null)
-  const [endValues, setEndValues] = useState(null)
+  const [gameOver, setGameOver] = useState(false);
+  const [total, setTotal] = useState(null);
+  const [endValues, setEndValues] = useState(null);
+  const [did, setDid] = useState(false);
 
   useEffect(() => {
     firebase
@@ -33,41 +36,71 @@ const Game = () => {
       });
   }, []);
 
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
   useEffect(() => {
-   
     if (!game?.data()) return;
     if (game?.data()?.players.length < 4) return;
-    if (game.data().round==5){
-      setMarketMaker(null)
-      
-      setGameOver(true)
-      let total=0
-      for(let i=0;i<=3;i+=1){
-        total+=game?.data().players[i].card
+    if (!did && game.data().players.length === 4) {
+      setDid(true);
+      let a = [];
+      for (let i = 20; i <= 50; i++) {
+        a.push(i);
       }
 
-      setTotal(total)
+      shuffleArray(a);
+      let temp = [...game.data().players];
+      for (let i = 0; i < 4; i++) {
+        temp[i].card = a.pop();
+      }
+      firebase.firestore().collection("Games").doc(gameID).update({
+        players: temp,
+        remainingCards: a,
+      });
+    }
+    if (game.data().round == 5) {
+      setMarketMaker(null);
 
-      let temp2= []
-      for(let i =0; i < 4; i++){
-        temp2[i] = {}
-        temp2[i].name = game.data().players[i].name[0]
-        temp2[i].card = game.data().players[i].card
-        temp2[i].end = game.data().players[i].stock * total
+      setGameOver(true);
+      let total = 0;
+      for (let i = 0; i <= 3; i += 1) {
+        total += game?.data().players[i].card;
       }
 
-      setEndValues(temp2)
+      setTotal(total);
 
-      let temp = game.data().players[userIndex].stock*total
-        firebase.firestore().collection('Users').doc(user.uid).update({
-          balance: user.balance + temp
-        })
+      let temp2 = [];
+      for (let i = 0; i < 4; i++) {
+        temp2[i] = {};
+        temp2[i].name = game.data().players[i].name[0];
+        temp2[i].card = game.data().players[i].card;
+        temp2[i].end = game.data().players[i].stock * total;
+      }
 
-      return 
+      setEndValues(temp2);
+
+      let temp = game.data().players[userIndex].stock * total;
+      firebase
+        .firestore()
+        .collection("Users")
+        .doc(user.uid)
+        .update({
+          balance: user.balance + temp,
+        });
+
+      if (userIndex == 0) {
+        deleteDoc(doc(firebase.firestore(), "Games", gameID));
+      }
+
+      return;
     }
     let keeper = -1;
     for (let i = 0; i <= 3; i++) {
-      console.log(game?.data()?.players[i].name[0] == user.username, i)
+      console.log(game?.data()?.players[i].name[0] == user.username, i);
       if (game?.data()?.players[i].name[0] == user.username) {
         keeper = i;
       }
@@ -101,7 +134,7 @@ const Game = () => {
       temp[mmIndex].money += price;
       temp[userIndex].stock += 1;
       temp[mmIndex].stock -= 1;
-      console.log(temp)
+      console.log(temp);
       firebase.firestore().collection("Games").doc(gameID).update({
         players: temp,
         transactions: t,
@@ -132,23 +165,32 @@ const Game = () => {
       temp[mmIndex].money -= price;
       temp[userIndex].stock -= 1;
       temp[mmIndex].stock += 1;
-      console.log(t)
+      console.log(t);
       firebase.firestore().collection("Games").doc(gameID).update({
         players: temp,
         transactions: t,
       });
     }
   }
-  if(gameOver){
-    return <div> Game Over, total was {total}. {JSON.stringify(endValues)}</div>
+  if (gameOver) {
+    return (
+      <div style={{ width: 300, margin: "0px auto" }}>
+        <div> Game Over, total was {total}.</div>
+        {endValues.map((r) => (
+          <div style={{ margin: "12px 0" }}>
+            {r.name}, Card: {r.card}, Ending Total: {r.end}
+          </div>
+        ))}
+        <Link to="/games">Return to lobby</Link>
+      </div>
+    );
   }
 
   return (
     <div>
       <HeaderText>Game 1</HeaderText>
-      USERINDEX{userIndex}
-      <h1>{game?.data()?.round}</h1>
-      <h1>{marketMaker}</h1>
+      <h1>Your Card: {game?.data()?.players[userIndex]?.card}</h1>
+      <h1>Round: {game?.data()?.round}</h1>
       <div style={{ height: 18 }}></div>
       <Container>
         <PlayerContainer>
@@ -186,17 +228,12 @@ const Game = () => {
               game.data() &&
               !game?.data().purchasing &&
               userIndex == game?.data().mm && (
-                <MarketForm
-                  value={value}
-                  setValue={setValue}
-                  game={game.data()}
-                  gameID={gameID}
-                />
+                <MarketForm game={game.data()} gameID={gameID} />
               )}
           </MarketContainer>
 
           <Transactions>
-            <HeaderText>transactions</HeaderText>
+            {/* <HeaderText>transactions</HeaderText> */}
             <div style={{ marginBottom: 12 }}></div>
             {/* {JSON.stringify(
               game?.data()?.transactions.map((t) => <Transaction t={t} />)
@@ -215,12 +252,10 @@ const Container = styled.div`
 
 const PlayerContainer = styled.div`
   width: 400px;
-  border: 1px solid white;
 `;
 
 const GameInfo = styled.div`
   flex: 1;
-  border: 1px solid white;
 `;
 
 const Transactions = styled.div``;
@@ -232,5 +267,6 @@ const MarketContainer = styled.div`
 const RevealedCardsContainer = styled.div`
   display: flex;
   gap: 18px;
+  flex-wrap: wrap;
 `;
 export default Game;

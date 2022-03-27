@@ -1,55 +1,51 @@
-
-   
-import React,{useContext, useEffect,useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate } from "react-router";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
-import {AuthContext} from "../context/AuthProvider";
-import {ApiContext} from "../context/ApiProvider"
-import firebase from "../firebase/firebase"
-
+import { AuthContext } from "../context/AuthProvider";
+import { ApiContext } from "../context/ApiProvider";
+import firebase from "../firebase/firebase";
 
 const PendingGame = ({ game }) => {
-
   const { games } = useContext(ApiContext);
   const { user } = useContext(AuthContext);
-  const [gameKey, setGameKey]=useState(null)
-  const[done, setDone] = useState(false)
+  const [gameKey, setGameKey] = useState(null);
+  const [done, setDone] = useState(false);
 
-  const [nav, setNav] = useState(false)
+  const [nav, setNav] = useState(false);
 
-  const joinGame = (user,key) => {
-    
-    firebase.firestore().collection('Games').doc(key).update({
-      players: [...game.players, {card:30,stock:0,money:0,name:[user.username,user.uid]}]
-    }).then((doc)=>{
-        setGameKey(key)
+  const joinGame = (user, key) => {
+    firebase
+      .firestore()
+      .collection("Games")
+      .doc(key)
+      .update({
+        players: [
+          ...game.players,
+          { card: 30, stock: 0, money: 0, name: [user.username, user.uid] },
+        ],
       })
-      
-    }
-
-
-  
+      .then((doc) => {
+        setGameKey(key);
+      });
+  };
 
   //en game is full and im in the game, redirect to games/(id of pending)
-    //in the game/askdljsalkdj, if doesnt exist, and creator of pending game with same id create new game
-    // pendingGames.find(game=>{
-    //   if(game.players.find(g=>g.id==user.uid) && game.players.length==4){
-    //     console.log('in hereee');
-    //     setNav(true)
+  //in the game/askdljsalkdj, if doesnt exist, and creator of pending game with same id create new game
+  // pendingGames.find(game=>{
+  //   if(game.players.find(g=>g.id==user.uid) && game.players.length==4){
+  //     console.log('in hereee');
+  //     setNav(true)
 
-    //   }
-    // })
+  //   }
+  // })
 
-  
-
-        if(gameKey) {
-        return <Navigate to={`/games/${gameKey}`}/>
-        }
-        if(!game) return <p>Loading</p>
+  if (gameKey) {
+    return <Navigate to={`/games/${gameKey}`} />;
+  }
+  if (!game) return <p>Loading</p>;
   return (
     <Container>
-      
       <Name>{game.name}</Name>
       <Creator>{game?.createdBy}</Creator>
       <Players>
@@ -71,8 +67,12 @@ const PendingGame = ({ game }) => {
         {game?.players?.length}/4
       </Players>
       {/*<Join>Join game</Join>*/}
-      
-      { game?.players?.find(m => m.name[0] == user.username)?<p>Waiting for more players</p> :<Join onClick={() => joinGame(user,game.key)}>Join Game</Join> }
+
+      {game?.players?.find((m) => m.name[0] == user.username) ? (
+        <p>Waiting for more players</p>
+      ) : (
+        <Join onClick={() => joinGame(user, game.key)}>Join Game</Join>
+      )}
     </Container>
   );
 };

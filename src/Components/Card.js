@@ -15,7 +15,7 @@ const CardContainer = styled.div`
   display: grid;
   place-content: center;
   font-size: 24px;
-  background-color: ${colors.gray300};
+  background-color: ${colors.gray100};
   color: black;
   font-weight: 500;
 `;

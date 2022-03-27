@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import firebase from "../firebase/firebase";
-import {AuthContext} from './AuthProvider';
+import { AuthContext } from "./AuthProvider";
 import { createPendingGame } from "../Constants/Functions";
 
 import { collection, getDocs } from "firebase/firestore";
@@ -8,7 +8,7 @@ const ApiContext = createContext();
 
 const ApiProvider = ({ children }) => {
   const [games, setGames] = useState([]);
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   //console.log(user.username);
 
   const getGames = () => {
@@ -23,7 +23,7 @@ const ApiProvider = ({ children }) => {
             key: documentSnapshot.id,
           });
         });
-        
+
         setGames(games);
       });
   };
@@ -43,21 +43,29 @@ const ApiProvider = ({ children }) => {
   };
 
   const createGame = async (name) => {
-  
-      let k = await firebase.firestore().collection("Games").add({
-        name:name,
-        players:[{card:30,stock:0,money:0,name:[user.username,user.uid]}],
-        round:0,
-        revealed:[],
-        range:[30,50],
-        transactions:[],
-        currentMarket:{},
-        active:false, 
-        mm:0,
-        purchasing:false
-      })
-      return k.id
-  
+    let k = await firebase
+      .firestore()
+      .collection("Games")
+      .add({
+        name: name,
+        players: [
+          {
+            card: Math.floor(Math.random() * 21) + 30,
+            stock: 0,
+            money: 0,
+            name: [user.username, user.uid],
+          },
+        ],
+        round: 0,
+        revealed: [],
+        range: [20, 50],
+        transactions: [],
+        currentMarket: {},
+        active: false,
+        mm: 0,
+        purchasing: false,
+      });
+    return k.id;
   };
   useEffect(() => {
     //if (!user) return;
