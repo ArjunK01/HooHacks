@@ -4,9 +4,11 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  setPersistence,
+  browserSessionPersistence
 } from "firebase/auth";
 //import "./App.css";
-import { auth } from "../firebase/firebase";
+import { auth, } from "../firebase/firebase";
 import firebase from "../firebase/firebase";
 import { getBottomNavigationActionUtilityClass } from "@mui/material";
 
@@ -16,6 +18,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
 
   useEffect(() => {
+    setPersistence(auth, browserSessionPersistence)
     onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         firebase
