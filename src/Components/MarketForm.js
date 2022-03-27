@@ -2,14 +2,60 @@ import React, { useState, useEffect } from "react";
 import Slider from "@mui/material/Slider";
 import styled from "styled-components";
 import colors from "../Constants/Colors";
+import firebase from "../firebase/firebase";
+const MarketForm = ({ value, setValue, game }) => {
+  const [timer, setTimer] = useState(null);
 
-const MarketForm = ({ value, setValue }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  useEffect(() => {
+    let start = Date.now();
+    console.log("SETTING MM INTERVAL");
+    let refreshID = setInterval(() => {
+      let delta = Date.now() - start; // milliseconds elapsed since start
+
+      setTimer(10 - Math.floor(delta / 1000)); // in seconds
+      if (delta > 10000) {
+        clearInterval(refreshID);
+
+        let t = game > 0 ? [...game.transactions] : [];
+        let something = {
+          playerName: "arjun",
+          makeMarket: true,
+          sell: true,
+          // ask: value[1],
+          ask: value[1],
+          bid: value[0],
+          askSize: 5,
+          // bid: value[0],
+          bidSize: 5,
+          quantity: 0,
+          for: 0,
+        };
+        t.push(something);
+        firebase
+          .firestore()
+          .collection("Games")
+          .doc(gameID)
+          .update({
+            purchasing: true,
+            currentMarket: {
+              ask: value[1],
+              askVolume: 5,
+              bid: value[0],
+              bidVolume: 5,
+            },
+            transactions: t,
+          });
+        return;
+      }
+    }, 1000);
+  }, []);
   return (
     <Container>
+      Timer: {timer}
       <Row>
         <Section>
           <Label>Bid: </Label>
