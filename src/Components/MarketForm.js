@@ -8,8 +8,11 @@ const MarketForm = ({value, setValue}) => {
     setValue(newValue);
   };
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 8ced59513df34e0505013af7084365df0063cf55
   return (
     <Container>
       <Row>
