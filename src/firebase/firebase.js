@@ -4,7 +4,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.KEY,
+  apiKey: "AIzaSyA0TMtePXQBbWmNVpgWXChTDCzCxWEEMxA",
   authDomain: "quazzi-43f95.firebaseapp.com",
   projectId: "quazzi-43f95",
   storageBucket: "quazzi-43f95.appspot.com",
